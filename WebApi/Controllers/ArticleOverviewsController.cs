@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.WebApi.Models;
 using Travel.WebApi.ViewModels;
+using Travel.WebApi.DTO;
 namespace Travel.WebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -119,14 +120,44 @@ namespace Travel.WebApi.Controllers
 
         // POST: api/ArticleOverviews
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        //-----strat 本來的HttpPost-------
+        //[HttpPost]
+        //public async Task<ActionResult<ArticleOverview>> PostArticleOverview(ArticleOverview articleOverview)
+        //{
+        //    _context.ArticleOverviews.Add(articleOverview);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetArticleOverview", new { id = articleOverview.ArticleId }, articleOverview);
+        //}
+        //-----end 本來的HttpPost-------
+
+        //-----嘗試post-------
         [HttpPost]
-        public async Task<ActionResult<ArticleOverview>> PostArticleOverview(ArticleOverview articleOverview)
+        public async Task<ActionResult<ArticleOverview>> PostArticleOverview(ArticleOverview model)
         {
-            _context.ArticleOverviews.Add(articleOverview);
+            if (model == null)
+            {
+                return BadRequest("Invalid article data.");
+            }
+
+            // 根据前端传来的数据创建一个新的 ArticleOverview 实体
+            var article = new ArticleOverview
+            {
+                MemberuniqueId = model.MemberuniqueId,
+                ArticleName = model.ArticleName,
+                ArticleContent = model.ArticleContent,
+                CreateTime = model.CreateTime ?? DateTime.UtcNow,
+                UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
+                ArticleCoverImage = model.ArticleCoverImage
+            };
+
+            _context.ArticleOverviews.Add(article);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetArticleOverview", new { id = articleOverview.ArticleId }, articleOverview);
+            return CreatedAtAction(nameof(GetArticleOverview), new { id = article.ArticleId }, article);
         }
+        //-----end 嘗試post-------
 
         // DELETE: api/ArticleOverviews/5
         [HttpDelete("{id}")]
