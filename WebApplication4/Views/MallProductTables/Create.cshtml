@@ -1,0 +1,48 @@
+﻿@model Travel.Admin.Models.MallProductTable
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>MallProductTable</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MallProductId" class="control-label"></label>
+                <input asp-for="MallProductId" class="form-control" />
+                <span asp-validation-for="MallProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MallProductName" class="control-label"></label>
+                <input asp-for="MallProductName" class="form-control" />
+                <span asp-validation-for="MallProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoldAmount" class="control-label"></label>
+                <input asp-for="GoldAmount" class="form-control" />
+                <span asp-validation-for="GoldAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pimage" class="control-label"></label>
+                <input asp-for="Pimage" class="form-control" />
+                <span asp-validation-for="Pimage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

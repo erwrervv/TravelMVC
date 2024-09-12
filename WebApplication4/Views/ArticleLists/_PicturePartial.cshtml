@@ -1,0 +1,12 @@
+﻿@model Travel.Admin.Models.ArticleOverview
+
+@if (Model!=null && Model.ArticleCoverImage != null && Model.ArticleCoverImage.Length > 0)
+{
+    <img src="@Url.Action("GetPicture","ArticleOverviews",new{id=Model.ArticleId})"
+         title="@Html.DisplayFor(model => model.ArticleName)" style="width:350px;height:300px" />
+}
+else
+{
+    <img src="~/images/noimage.png" asp-append-version="true"
+         style="width:350px;height:300px" />
+}

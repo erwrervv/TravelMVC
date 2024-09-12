@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Travel.Admin.Models.MallProductPurchaseRecord>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>MallProductPurchaseRecord</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">新增</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExchangeStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExchangeTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MallProductTable)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExchangeStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExchangeTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MallProductTable.MallProductTableId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MprecordId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MprecordId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MprecordId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

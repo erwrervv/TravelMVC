@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Travel.Admin.Models.BasicMemberInformation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>會員資料</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">新增</a>
+</p>
+<table class="table table-hover">
+    <thead class="table-secondary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberuniqueId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Activate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberPicture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Level)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="tc">
+                    @Html.DisplayFor(modelItem => item.MemberuniqueId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberValue)
+                </td>
+                <td>
+                    @if (item.MemberPicture != null && item.MemberPicture.Length > 0)
+                    {
+                        <img src="@Url.Action("GetPicture", "BasicMemberInformations", new { id = item.MemberuniqueId })" style="width: 100px; height: 100px;" />
+                    }
+                    else
+                    {
+                        <span>無圖片</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Level.LevelId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MemberuniqueId">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.MemberuniqueId">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.MemberuniqueId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Styles {
+    <link href="https://cdn.datatables.net/v/dt/dt-2.1.3/datatables.min.css" rel="stylesheet">
+}
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/v/dt/dt-2.1.3/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("table").dataTable({
+                columns: [
+                    { "data": "MemberuniqueId", "width": "10%" },
+                    { "data": "MemberName", "width": "10%" },
+                    { "data": "Activate", "width": "8%" },
+                    { "data": "Phone", "width": "10%" },
+                    { "data": "Birthday", "width": "10%" },
+                    { "data": "Email", "width": "10%" },
+                    { "data": "Password", "width": "10%" },
+                    // { "data": "BeCommodity", "width": "10%" },
+                    { "data": "MemberValue", "width": "10%" },
+                    { "data": "MemberPicture", "width": "10%" },
+                    { "data": "Level", "width": "6%" },
+                    { "data": "", "width": "10%" },
+                ],
+                fixedHeader: { header: false },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            });
+        });
+    </script>
+}

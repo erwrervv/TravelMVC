@@ -1,0 +1,51 @@
+﻿@model Travel.Admin.Models.Storedrecord
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Storedrecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MemberuniqueId" class="control-label"></label>
+                <select asp-for="MemberuniqueId" class ="form-control" asp-items="ViewBag.MemberuniqueId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoldDenominationId" class="control-label"></label>
+                <select asp-for="GoldDenominationId" class ="form-control" asp-items="ViewBag.GoldDenominationId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseDate" class="control-label"></label>
+                <input asp-for="PurchaseDate" class="form-control" />
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentStatus" class="control-label"></label>
+                <input asp-for="PaymentStatus" class="form-control" />
+                <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RefundStatus" class="control-label"></label>
+                <input asp-for="RefundStatus" class="form-control" />
+                <span asp-validation-for="RefundStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

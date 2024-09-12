@@ -1,0 +1,125 @@
+﻿@model IEnumerable<Travel.Admin.Models.TravelDetail>
+@inject FinalContext context;
+@section Styles
+{
+    <style>
+        tr {
+            line-height: 30px; /* 行高与表头高度一致 */
+            text-align: center; /* 水平居中 */
+            vertical-align: middle; /* 垂直居中 */
+        }
+
+
+        .center-text2 {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .link-container {
+            display: flex;
+            gap: 10px;
+        }
+
+            .link-container a {
+                text-decoration: none;
+                color: #007bff;
+            }
+
+        p {
+            margin-top: 50px;
+        }
+    </style>
+}
+
+    ViewData["Title"] = "Index";
+}
+<p>
+    <h1>旅遊產品總數:@context.TravelDetails.Count()</h1>
+    <a asp-action="Create" class="btn btn-primary">新增</a>
+</p>
+
+<table id="productTable" class="table  table-hover" >
+    <thead class="table-secondary">
+        <tr class="">
+            <th>
+                @Html.DisplayNameFor(model => model.TravelDetailedIntroduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TourBus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Train)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MorningName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LunchName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DinnerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccommodationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhichDay)
+            </th>
+       @*      <th>
+                @Html.DisplayNameFor(model => model.Travel)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="center-text2">
+                <td>
+                    @(item.TravelDetailedIntroduction.Length > 100 ? item.TravelDetailedIntroduction.Substring(0, 100) + "..." : item.TravelDetailedIntroduction)
+                </td>
+                <td class="center-text2">
+                @Html.DisplayFor(modelItem => item.TourBus)
+            </td>
+                <td class="center-text2">
+                @Html.DisplayFor(modelItem => item.Bus)
+            </td>
+                <td class="center-text2">
+                @Html.DisplayFor(modelItem => item.Train)
+            </td>
+                <td class="center-text2">
+                @Html.DisplayFor(modelItem => item.MorningName)
+            </td>
+                <td class="center-text2">
+                @Html.DisplayFor(modelItem => item.LunchName)
+            </td>
+                <td class="center-text2">
+                @Html.DisplayFor(modelItem => item.DinnerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccommodationName)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.WhichDay)
+            </td> 
+         @*    <td>
+                @Html.DisplayFor(modelItem => item.Travel.TravelId)
+            </td> *@
+                <td class="">
+                    <a asp-action="Edit" asp-route-id="@item.TravelDetailsId">修改</a><br/>
+                    <a asp-action="Details" asp-route-id="@item.TravelDetailsId">詳細資料</a><br/>
+                    <a asp-action="Delete" asp-route-id="@item.TravelDetailsId">刪除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts
+{
+    <script>
+
+    </script>
+}

@@ -1,0 +1,96 @@
+﻿@using System.Collections
+@model IEnumerable<Travel.Admin.Models.Comment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>評論</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">新增</a>
+</p>
+<table class="table table-hover">
+    <thead class="table-secondary">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Memberunique.MemberName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommentContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommentDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article.ArticleName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Memberunique.MemberName)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.CommentContent))
+                    {
+                        @(item.CommentContent.Length > 100 ? item.CommentContent.Substring(0, 100) + "..." : item.CommentContent)
+                    }
+                    else
+                    {
+                        <span>無內容</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CommentDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.ArticleName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CommentId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Styles {
+    <link href="https://cdn.datatables.net/v/dt/dt-2.1.3/datatables.min.css" rel="stylesheet">
+}
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/v/dt/dt-2.1.3/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //alert("ready");
+            $("table").dataTable({
+                // ajax: {
+                //     type: "GET",
+                //     url: "/ArticleOverviews/IndexJson",
+                //     dataSrc: function (json) {
+                //         return json;
+                //     },
+                // },
+
+                columns: [
+                    { "data": "MemberName", "width": "5%" },
+                    { "data": "CommentContent", "width": "5%" },
+                    { "data": "CommentDateTime", "width": "8%" },
+                    { "data": "Article", "width": "8%" },
+                    { "data": "", "width": "10%" },
+                ],
+                fixedHeader: { header: false },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/2.1.2/i18n/zh-HANT.json',
+                },
+            });
+        });
+    </script>
+
+}

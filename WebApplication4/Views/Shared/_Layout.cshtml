@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Travel.Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/Travel.Admin.styles.css" asp-append-version="true" /> *@
+    <style>
+        .navbarheight {
+            font-size: 12px; /* 字體大小 */
+            height: 50px; /* 導覽行高度 */
+            line-height: 50px;
+        }
+
+        p, h4, h3 {
+            margin-top: 50px;
+        }
+        body{
+            height:120%;
+        }
+
+        form, tbody {
+            margin-bottom: 200px;
+        }
+        form-group > img, span, input, label {
+            margin: 10px 0;
+        }
+
+        div > dl > dt, div > dl > dd {
+            margin: 20px 0;
+        }
+
+        .top-200 {
+            margin-top: 200px;
+        }
+        .bottom-200{
+            margin-bottom: 200px;
+        }
+        .w-80{
+            width:80%
+        }
+        .ma{
+            margin:0 auto
+        }
+    </style>
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header class="fixed-top">
+        <nav class="navbar navbarheight navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/homeicon.png" style="width:64px;height:32px" alt="Logo"></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="HomePage" asp-action="Index">HomePage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="BasicMemberInformations" asp-action="Index">會員管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MallProductPurchaseRecord" asp-action="Index">商城購買紀錄</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="MallProductTables" asp-action="Index">商城商品</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Storedrecords" asp-action="Index">儲值紀錄</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ProductTravels" asp-action="Index">旅行列表管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="TravelDetails" asp-action="Index">旅行產品管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ArticleOverviews" asp-action="Index">文章管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ArticleLists" asp-action="Index">文章列表管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ArticleRepositories" asp-action="Index">所有列表文章管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Comments" asp-action="Index">評論管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Api" asp-action="Index">API</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="http://localhost:4200/">API</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="w-80 ma">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+        <div class="bottom-200"></div>
+
+    <!-- 取消注释并修改 footer -->
+@*     <footer class="border-top footer text-muted fixed-bottom bg-light top-200" style="z-index: 1040;">
+        <div class=" text-center py-3">
+            &copy; 2024 - Travel.Admin - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer> *@
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@model Travel.Admin.Models.ArticleOverview
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>文章總覽</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="ArticleOverviews" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MemberuniqueId" class="control-label"></label>
+                <select asp-for="MemberuniqueId" class="form-control" asp-items="ViewBag.MemberuniqueId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleName" class="control-label"></label>
+                <input asp-for="ArticleName" class="form-control" />
+                <span asp-validation-for="ArticleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleContent" class="control-label"></label>
+                <textarea asp-for="ArticleContent" class="form-control"></textarea>
+                @* <input asp-for="ArticleContent" class="form-control" /> *@
+                <span asp-validation-for="ArticleContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateTime" class="control-label" hidden></label>
+                <input asp-for="CreateTime" class="form-control" hidden />
+                <span asp-validation-for="CreateTime" class="text-danger" hidden></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTime" class="control-label" hidden></label>
+                <input asp-for="UpdateTime" class="form-control" hidden />
+                <span asp-validation-for="UpdateTime" class="text-danger" hidden></span>
+            </div>
+                <div class="form-group">
+                <label asp-for="ArticleCoverImage" class="control-label"></label>
+                <img id="imgPreview" src="~/images/noimage.png" style="width:350px;height:300px" title="尚未選擇圖片" />
+                <input type="file" asp-for="ArticleCoverImage" class="form-control" accept="image/*"onchange="previewImage(this)" />
+            </div>
+            <div>
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    <script>
+                $.validator.unobtrusive.parse($('form'));
+        $('form').removeData('validator').removeData('unobtrusiveValidation');
+        function previewImage(input) {
+            var preview = document.getElementById('imgPreview');
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                // If no file is selected, revert to the default image
+                preview.src = '~/images/noimage.png';
+            }
+        }
+    </script>
+}

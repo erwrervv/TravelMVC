@@ -1,0 +1,83 @@
+﻿@model Travel.Admin.Models.ArticleOverview
+
+@{
+    ViewData["Title"] = "Edit";
+}
+@section Styles {
+
+            
+}
+<h1>Edit</h1>
+
+<h4>文章總覽</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-controller="ArticleOverviews" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ArticleId" />
+            <div class="form-group">
+                <label asp-for="MemberuniqueId" class="text-danger control-label border-2" hidden></label>
+@*                 @Html.DisplayFor(model => model.MemberuniqueId)
+                @Html.HiddenFor(model => model.MemberuniqueId) *@
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleName" class="control-label"></label>
+                <input asp-for="ArticleName" class="form-control" />
+                <span asp-validation-for="ArticleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleContent" class="control-label"></label>
+                <textarea asp-for="ArticleContent" class="form-control"></textarea>
+                @* <input asp-for="ArticleContent" class="form-control" /> *@
+                <span asp-validation-for="ArticleContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateTime" class="control-label" hidden></label>
+                <input asp-for="CreateTime" class="form-control" hidden />
+                <span asp-validation-for="CreateTime" class="text-danger" hidden></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTime" class="control-label" hidden></label>
+                <input asp-for="UpdateTime" class="form-control" hidden />
+                <span asp-validation-for="UpdateTime" class="text-danger" hidden></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleCoverImage" class="control-label"></label>
+                <img id="imgPreview" src="@(Model.ArticleCoverImage != null && Model.ArticleCoverImage.Length > 0 ? Url.Action("GetPicture", "ArticleOverviews", new { id = Model.ArticleId }) : Url.Content("~/images/noimage.png"))" style="width:350px;height:300px" title="尚未選擇圖片" />
+                <input type="file" asp-for="ArticleCoverImage" class="form-control" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">保存修改</button>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById("ArticleCoverImage").addEventListener("change", function (event) {
+            var input = event.target;
+            var preview = document.getElementById('imgPreview');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block'; // 显示预览图片
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '~/images/noimage.png'; // 如果没有选择文件，恢复默认图片
+                preview.style.display = 'block'; // 保持显示
+            }
+        });
+    </script>
+}

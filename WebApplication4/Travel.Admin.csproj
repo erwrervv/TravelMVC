@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-WebApplication4-e4332d3e-e323-47ce-bcad-8b096df1245b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\datatables\css\dataTables.bootstrap.css" />
+    <None Include="wwwroot\datatables\css\dataTables.bootstrap.min.css" />
+    <None Include="wwwroot\datatables\css\dataTables.bootstrap4.css" />
+    <None Include="wwwroot\datatables\css\dataTables.bootstrap4.min.css" />
+    <None Include="wwwroot\datatables\css\dataTables.foundation.css" />
+    <None Include="wwwroot\datatables\css\dataTables.foundation.min.css" />
+    <None Include="wwwroot\datatables\css\dataTables.jqueryui.css" />
+    <None Include="wwwroot\datatables\css\dataTables.jqueryui.min.css" />
+    <None Include="wwwroot\datatables\css\dataTables.material.css" />
+    <None Include="wwwroot\datatables\css\dataTables.material.min.css" />
+    <None Include="wwwroot\datatables\css\dataTables.semanticui.css" />
+    <None Include="wwwroot\datatables\css\dataTables.semanticui.min.css" />
+    <None Include="wwwroot\datatables\css\dataTables.uikit.css" />
+    <None Include="wwwroot\datatables\css\dataTables.uikit.min.css" />
+    <None Include="wwwroot\datatables\css\jquery.dataTables.css" />
+    <None Include="wwwroot\datatables\css\jquery.dataTables.min.css" />
+    <None Include="wwwroot\datatables\css\jquery.dataTables_themeroller.css" />
+    <None Include="wwwroot\datatables\css\jquery.dataTables_themeroller.min.css" />
+    <None Include="wwwroot\datatables\images\sort_asc.png" />
+    <None Include="wwwroot\datatables\images\sort_asc_disabled.png" />
+    <None Include="wwwroot\datatables\images\sort_both.png" />
+    <None Include="wwwroot\datatables\images\sort_desc.png" />
+    <None Include="wwwroot\datatables\images\sort_desc_disabled.png" />
+    <None Include="wwwroot\datatables\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\datatables\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.bootstrap4.js" />
+    <None Include="wwwroot\datatables\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.dataTables.js" />
+    <None Include="wwwroot\datatables\js\dataTables.dataTables.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.foundation.js" />
+    <None Include="wwwroot\datatables\js\dataTables.foundation.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.jqueryui.js" />
+    <None Include="wwwroot\datatables\js\dataTables.jqueryui.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.material.js" />
+    <None Include="wwwroot\datatables\js\dataTables.material.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.semanticui.js" />
+    <None Include="wwwroot\datatables\js\dataTables.semanticui.min.js" />
+    <None Include="wwwroot\datatables\js\dataTables.uikit.js" />
+    <None Include="wwwroot\datatables\js\dataTables.uikit.min.js" />
+    <None Include="wwwroot\datatables\js\jquery.dataTables.js" />
+    <None Include="wwwroot\datatables\js\jquery.dataTables.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\BasicMemberInformations\_MemberPicturePartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\HomePage\_ArticleCoverImagePartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\_PicturePartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+art overview (article_id)1篇文 1篇文的內容 2024-08-06 2024-08-06 
+
+art list (article_list_id)流水號 第一個人的第1個文章列表 第一個人的第2個文章列表  會員id
+
+art picture
+
+member like  文章流水號1 會員流水號1 true
+
+article_repository 文章列表有的文章 文章列表流水號1 文章編號1
+
+tracklist 流水號tracklist 會員流水號 追蹤會員流水號
+
+comment 評論流水號 文章流水號 評論會員流水號 評論內容 評論目前時間

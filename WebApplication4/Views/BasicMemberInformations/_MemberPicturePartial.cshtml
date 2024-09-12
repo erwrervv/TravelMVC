@@ -1,0 +1,12 @@
+﻿@model Travel.Admin.Models.BasicMemberInformation
+
+@if (Model != null && Model.MemberPicture != null && Model.MemberPicture.Length > 0)
+{
+    <img src="@Url.Action("GetPicture","BasicMemberInformation",new{id=Model.MemberuniqueId})" asp-append-version="true"
+         title="@Html.DisplayFor(model => model.MemberuniqueId)" style="width:200px;height:150px" />
+}
+else
+{
+    <img src="~/images/unknown.png" asp-append-version="true"
+         style="width:200px;height:150px" />
+}

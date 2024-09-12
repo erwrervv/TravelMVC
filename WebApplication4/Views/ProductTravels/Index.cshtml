@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Travel.Admin.Models.ProductTravel>
+@inject FinalContext context;
+@section Styles
+{    
+    <style>
+        .center-text {
+            text-align: center;
+        }
+        .link-container {
+            display: flex; 
+            gap: 10px;
+        }
+            .link-container a {
+                text-decoration: none;
+                color: #007bff; 
+            }
+        
+        
+        p{
+            margin-top:50px;
+        }
+    </style>
+}
+
+    ViewData["Title"] = "Index";
+}
+
+<p>
+	<h1>旅遊訂單總數:@context.ProductTravels.Count()</h1>
+    <a asp-action="Create" class="btn btn-primary">新增</a>
+</p>
+
+<table id="productTable" class="table  table-hover">
+    <thead class="table-secondary">
+        <tr class="center-text">
+            <th>
+                @Html.DisplayNameFor(model => model.AllDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TravelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TravelDatetime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TravelIntroduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TravelMeetingpoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductShow)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Travelarea.TravelareaName)
+            </th>
+            <th></th>
+			</tr>
+		</thead>
+
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TravelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TravelDatetime)
+            </td>
+            <td>
+                @(item.TravelIntroduction.Length > 100 ? item.TravelIntroduction.Substring(0, 100) + "..." : item.TravelIntroduction))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TravelMeetingpoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductShow)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Travelarea.TravelareaId)
+            </td>
+                <td class="">
+                    <a asp-action="Edit" asp-route-id="@item.TravelId">修改</a>
+                    <a asp-action="Details" asp-route-id="@item.TravelId">詳細資料</a>
+                    <a asp-action="Delete" asp-route-id="@item.TravelId">刪除</a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts
+{
+
+}
