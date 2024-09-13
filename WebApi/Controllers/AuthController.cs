@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Versioning;
+using Travel.WebApi.Models;
 using Travel.WebApi.ViewModels;
 
 namespace Travel.WebApi.Controllers
@@ -13,16 +15,26 @@ namespace Travel.WebApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly FinalContext _context;
+
+        public AuthController(FinalContext context)
+        {
+            _context = context;
+        }
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
-            // 模擬驗證用戶
-            if (model.Username == "admin" && model.Password == "123")
+            var member = _context.BasicMemberInformations.FirstOrDefault(x => x.Email == model.Username && x.Password == model.Password);
+            if(member != null)
             {
-                var token = GenerateJwtToken(model.Username,1);
-                return Ok(new { token });
+                var token = GenerateJwtToken(member.Email, member.MemberuniqueId);
+                var info = new 
+                {
+                    token= token,
+                    memberId=member.MemberuniqueId
+                };
+                return Ok(info);
             }
-
             return Unauthorized();
         }
         [Authorize]
