@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Travel.WebApi.Models;
 
-public partial class ArticleList
+public  class ArticleList
 {
     public int ArticleListId { get; set; }
 

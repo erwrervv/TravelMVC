@@ -45,7 +45,7 @@ namespace Travel.WebApi.Controllers
         {
             try
             {
-                var articles = await _context.ArticleOverviews.Include(x=>x.Memberunique).Select(x=> new ArticleOverviewsModel
+                var articles = await _context.ArticleOverviews.Include(x => x.Memberunique).Select(x => new ArticleOverviewsModel
                 {
                     ArticleId = x.ArticleId,
                     ArticleName = x.ArticleName,
@@ -54,9 +54,9 @@ namespace Travel.WebApi.Controllers
                     ArticleCoverImage = x.ArticleCoverImage,
                     CreateTime = x.CreateTime,
                     UpdateTime = x.UpdateTime,
-                    
+
                 }).ToListAsync();
-                return Ok(articles); 
+                return Ok(articles);
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace Travel.WebApi.Controllers
                     return NotFound();
                 }
 
-                return Ok(articleOverview); 
+                return Ok(articleOverview);
             }
             catch (Exception ex)
             {
@@ -90,13 +90,13 @@ namespace Travel.WebApi.Controllers
         // PUT: api/ArticleOverviews/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticleOverview(int id, ArticleOverview articleOverview)
+        public async Task<IActionResult> PutArticleOverview(int id,[FromBody] ArticleOverview articleOverview)
         {
             if (id != articleOverview.ArticleId)
             {
                 return BadRequest();
             }
-
+            articleOverview.ArticleContent = articleOverview.ArticleContent.Trim();
             _context.Entry(articleOverview).State = EntityState.Modified;
 
             try
@@ -149,7 +149,9 @@ namespace Travel.WebApi.Controllers
                 ArticleContent = model.ArticleContent,
                 CreateTime = model.CreateTime ?? DateTime.UtcNow,
                 UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
-                ArticleCoverImage = model.ArticleCoverImage
+                ArticleCoverImage = model.ArticleCoverImage,
+                Tag = model.Tag,
+
             };
 
             _context.ArticleOverviews.Add(article);
@@ -178,6 +180,47 @@ namespace Travel.WebApi.Controllers
         private bool ArticleOverviewExists(int id)
         {
             return _context.ArticleOverviews.Any(e => e.ArticleId == id);
+        }
+        [HttpGet("GetPaged")]
+        public IActionResult GetPaged([FromQuery] PageInfo page)
+        {
+            if (page.PageSize <= 0) page.PageSize = 5;
+            if (page.PageNumber <= 0) page.PageNumber = 1;
+            var totalActicle = _context.ArticleOverviews.Count(); //計算總共筆數
+
+
+            var acticleAllData = _context.ArticleOverviews.Include(m => m.Memberunique).OrderByDescending(x => x.UpdateTime)
+                .Skip((page.PageNumber - 1) * page.PageSize) //Skip  假設目前第1頁 1-1=0 *預設筆數(5) 所以跳過0筆
+                .Take(page.PageSize).Select(x => new
+                {
+                    ArticleId = x.ArticleId,
+                    ArticleName = x.ArticleName,
+                    ArticleContent = x.ArticleContent,
+                    CreateTime = x.CreateTime,
+                    ArticleCoverImage = x.ArticleCoverImage,
+                    UpdateTime = x.UpdateTime,
+                    MemberName = x.Memberunique.MemberName
+                })//取得幾筆 (5)
+                .ToList();
+            var pagedResult = new
+            {
+                TotalCount = totalActicle, //總共筆數
+                PageSize = page.PageSize, //每次數量
+                PageNumber = page.PageNumber, //第幾頁
+                TotalPages = (int)Math.Ceiling(totalActicle / (double)page.PageSize), //總共幾個分頁
+                List = acticleAllData //資料源
+            };
+            return Ok(pagedResult);
+        }
+        [HttpGet("GetSearchData")]
+        public IActionResult GetSearchData(string keyword)
+        {
+            if (string.IsNullOrEmpty(keyword))
+            {
+                return BadRequest("Keyword cannot be empty");
+            }
+            var searchResults = _context.ArticleOverviews.Where(x => x.ArticleName.Contains(keyword)).OrderByDescending(x => x.UpdateTime).ToList();
+            return Ok(searchResults);
         }
     }
 }
