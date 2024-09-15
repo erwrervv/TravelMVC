@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.WebApi.Models;
@@ -26,18 +27,37 @@ namespace Travel.WebApi.Controllers
         [HttpGet]
         public ActionResult GetArticleLists()
         {
-            //var articleView = _context.ArticleOverviews.Where(x=>x.)
-            var result = _context.ArticleLists.Include(m => m.Memberunique).Select(x => new 
-            {
-                ArticleListId = x.ArticleListId,
-                MemberuniqueId = x.MemberuniqueId,
-                ArticleListName = x.ArticleListName,
-                ArticleRepositories = x.ArticleRepositories,
-                MemberName = x.Memberunique.MemberName,
-                //Image = articleView.ArticleCoverImage,
-            }).ToList();
-            //return await _context.ArticleLists.ToListAsync().Result;
+            var articleLists = _context.ArticleLists
+            .Include(m => m.Memberunique)
+            .ToList();
+
+            var articleOverviews = _context.ArticleOverviews.ToList();
+
+            var result = articleLists
+                .Select(item => new
+                {
+                    ArticleListId = item.ArticleListId,
+                    MemberuniqueId = item.MemberuniqueId,
+                    ArticleListName = item.ArticleListName,
+                    ArticleRepositories = item.ArticleRepositories,
+                    MemberName = item.Memberunique.MemberName,
+                    UpdateTime = articleOverviews
+                        .Where(x => x.Tag == item.ArticleListName)
+                        .Select(x => x.UpdateTime)
+                        .ToList(),
+                    PartialArticleOverviews = articleOverviews
+                        .Where(x => x.Tag == item.ArticleListName)
+                        .Select(x =>new 
+                        {
+                            Image=x.ArticleCoverImage,
+                            ArticleId=x.ArticleId,
+                            UpdateTime =x.UpdateTime
+                        } )
+                        .ToList()
+                }).ToList();
+
             return Ok(result);
+
         }
 
         // GET: api/ArticleLists/5
@@ -90,16 +110,16 @@ namespace Travel.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<ArticleList>> PostArticleList(ArticleList articleList)
         {
-            var data=new ArticleList()
+            var data = new ArticleList()
             {
                 MemberuniqueId = articleList.MemberuniqueId,
-                ArticleListName=articleList.ArticleListName,
-                ArticleListId=articleList.ArticleListId,
+                ArticleListName = articleList.ArticleListName,
+                ArticleListId = articleList.ArticleListId,
             };
             _context.ArticleLists.Add(data);
             await _context.SaveChangesAsync();
 
-         return Ok(data);
+            return Ok(data);
         }
 
         // DELETE: api/ArticleLists/5

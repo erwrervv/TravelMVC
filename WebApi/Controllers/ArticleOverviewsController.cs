@@ -96,7 +96,6 @@ namespace Travel.WebApi.Controllers
             {
                 return BadRequest();
             }
-            articleOverview.ArticleContent = articleOverview.ArticleContent.Trim();
             _context.Entry(articleOverview).State = EntityState.Modified;
 
             try
