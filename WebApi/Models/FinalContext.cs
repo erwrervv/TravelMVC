@@ -153,6 +153,7 @@ public partial class FinalContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("create_time");
             entity.Property(e => e.MemberuniqueId).HasColumnName("memberunique_id");
+            entity.Property(e => e.Tag).HasColumnName("tag");
             entity.Property(e => e.UpdateTime)
                 .HasColumnType("datetime")
                 .HasColumnName("update_time");

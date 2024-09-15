@@ -21,6 +21,8 @@ public partial class ArticleOverview
 
     public string? ArticleCoverImageString { get; set; }
 
+    public string? Tag { get; set; }
+
     public virtual ICollection<ArticlePicture> ArticlePictures { get; set; } = new List<ArticlePicture>();
 
     public virtual ICollection<ArticleRepository> ArticleRepositories { get; set; } = new List<ArticleRepository>();

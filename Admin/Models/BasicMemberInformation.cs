@@ -39,7 +39,6 @@ public partial class BasicMemberInformation
 
     public byte[]? MemberPicture { get; set; }
 
-
     public virtual ICollection<ArticleList> ArticleLists { get; set; } = new List<ArticleList>();
 
     public virtual ICollection<ArticleOverview> ArticleOverviews { get; set; } = new List<ArticleOverview>();
