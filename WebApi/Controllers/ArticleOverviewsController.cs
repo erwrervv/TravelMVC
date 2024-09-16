@@ -201,7 +201,8 @@ namespace Travel.WebApi.Controllers
             //無搜尋文字則全部取回
             var result = query.OrderByDescending(x => x.UpdateTime)
               .Skip((page.PageNumber - 1) * page.PageSize) //Skip  假設目前第1頁 1-1=0 *預設筆數(5) 所以跳過0筆
-              .Take(page.PageSize).Select(x => new //取得幾筆 (5)
+              .Take(page.PageSize)//取得幾筆 (5)
+              .Select(x => new 
               {
                   ArticleId = x.ArticleId,
                   ArticleName = x.ArticleName,
@@ -211,7 +212,7 @@ namespace Travel.WebApi.Controllers
                   UpdateTime = x.UpdateTime,
                   MemberName = x.Memberunique.MemberName
               })
-              .ToList<object>();
+              .ToList();
             //計算總共筆數
             var totalActicle = query.Count();
             var pagedResult = new

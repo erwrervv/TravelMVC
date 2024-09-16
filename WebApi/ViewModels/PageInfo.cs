@@ -10,7 +10,6 @@
         /// <summary>
         /// 第幾頁
         /// </summary>
-        /// <value></value>
         public int PageNumber { get; set; }
         /// <summary>
         /// 搜尋關鍵字

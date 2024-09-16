@@ -50,6 +50,7 @@ namespace Travel.WebApi.Controllers
                         .Select(x =>new 
                         {
                             Image=x.ArticleCoverImage,
+                            ArticleName=x.ArticleName,
                             ArticleId=x.ArticleId,
                             UpdateTime =x.UpdateTime
                         } )
