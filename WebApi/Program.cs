@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -97,6 +98,7 @@ builder.Services.AddControllers();
 
 
 var app = builder.Build();
+var env = app.Environment;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -108,8 +110,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.UseExceptionHandler("/Home/Error");
-app.UseStaticFiles();
-
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(env.ContentRootPath, "images")),
+    RequestPath = "/images"
+});
 app.UseHttpsRedirection();
 //app.UseCors("test");
 app.UseCors("AllowAllOrigins");
