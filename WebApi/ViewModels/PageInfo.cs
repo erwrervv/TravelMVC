@@ -12,5 +12,13 @@
         /// </summary>
         /// <value></value>
         public int PageNumber { get; set; }
+        /// <summary>
+        /// 搜尋關鍵字
+        /// </summary>
+        public string? SearchKeyword{ get; set; }
+        /// <summary>
+        /// 搜尋Tag
+        /// </summary>
+        public string? SearchTagName { get; set; }
     }
 }
