@@ -9,6 +9,6 @@
         public DateTime? CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
         public byte[] ArticleCoverImage { get; set; }
-        public byte[] ArticleCoverImage2 { get; set; }
+      
     }
 }
