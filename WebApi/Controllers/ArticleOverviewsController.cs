@@ -97,6 +97,15 @@ namespace Travel.WebApi.Controllers
             {
                 return NotFound("此ID無對應文章");
             }
+            
+            var oldTag = oldarticleOverviewData.Tag.Split(",").Select(s => s.Trim()); //拆分原資料tag
+            var newtag = articleOverview.Tag.Split(",").Select(s => s.Trim());//拆分新資料tag
+            var duplicateTag = oldTag.Intersect(newtag); //去除重複TAG
+            if (duplicateTag.Any())
+            {
+                var str = string.Join(",", duplicateTag);
+                return BadRequest($"此文章已加入過以下文章列表：{articleOverview.Tag}");
+            }
             if (articleOverview.ArticleCoverImage != null)
             {
                 var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
@@ -240,8 +249,9 @@ namespace Travel.WebApi.Controllers
                   ArticleCoverImage = x.ArticleCoverImage,
                   UpdateTime = x.UpdateTime,
                   MemberName = x.Memberunique.MemberName,
+                  Tag = x.Tag,
                   //ImageUrl = Path.Combine("/images", "articleId", x.ArticleId.ToString(), "1.jpg")// 圖片相對的 URL 
-                  ImageUrl = x.ArticleCoverImageString
+                  ArticleCoverImageString = x.ArticleCoverImageString
               })
               .ToList();
             //計算總共筆數
