@@ -104,10 +104,6 @@ namespace Travel.WebApi.Controllers
                 var filePath = Path.Combine(directoryPath, "1.jpg"); //ex: /images/articleId/ID/1.jpg
                 await System.IO.File.WriteAllBytesAsync(filePath, articleOverview.ArticleCoverImage);//寫入資料
             }
-            else
-            {
-                oldarticleOverviewData.ArticleCoverImageString = articleOverview.ArticleCoverImageString; //如果傳入值為空 維持原樣
-            }
             //以下為修改後賦值
             oldarticleOverviewData.ArticlePictures = articleOverview.ArticlePictures ?? oldarticleOverviewData.ArticlePictures;
             oldarticleOverviewData.ArticleContent = articleOverview.ArticleContent ?? oldarticleOverviewData.ArticleContent;
@@ -162,16 +158,6 @@ namespace Travel.WebApi.Controllers
             {
                 return BadRequest("Invalid article data.");
             }
-            var idMax = _context.ArticleOverviews.Max(x => x.ArticleId) + 1;
-            var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
-            var directoryPath = Path.Combine(rootPath, "articleId", idMax.ToString()); // 組檔案相對路徑 (如果是全新文章則會創建資料夾)
-            var filePath = Path.Combine(directoryPath, "1.jpg"); //ex: /images/articleId/ID/1.jpg
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);//判斷式: 不存在則創建              
-            }
-            await System.IO.File.WriteAllBytesAsync(filePath, model.ArticleCoverImage);
-
             // 根据前端传来的数据创建一个新的 ArticleOverview 实体
             var article = new ArticleOverview
             {
@@ -180,14 +166,26 @@ namespace Travel.WebApi.Controllers
                 ArticleContent = model.ArticleContent,
                 CreateTime = model.CreateTime ?? DateTime.UtcNow,
                 UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
-                ArticleCoverImage = model.ArticleCoverImage,
+                //ArticleCoverImage = model.ArticleCoverImage,
                 Tag = model.Tag,
-                ArticleCoverImageString = @$"/images\articleId\{idMax}\1.jpg"  //規定存入格式
+                //ArticleCoverImageString  //規定存入格式
             };
-
             _context.ArticleOverviews.Add(article);
             await _context.SaveChangesAsync();
-
+            //流程：先產生出當前資料真實ID 
+            //1.交由後續組成路徑使用
+            //2.ArticleCoverImageString欄位路徑組成為真實ID
+            article.ArticleCoverImageString = @$"/images\articleId\{article.ArticleId}\1.jpg";
+            var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
+            var directoryPath = Path.Combine(rootPath, "articleId", article.ArticleId.ToString()); // 組檔案相對路徑 (如果是全新文章則會創建資料夾)
+            var filePath = Path.Combine(directoryPath, "1.jpg"); //ex: /images/articleId/ID/1.jpg
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);//判斷式: 不存在則創建              
+            }
+            _context.ArticleOverviews.Update(article);
+            await _context.SaveChangesAsync();
+            await System.IO.File.WriteAllBytesAsync(filePath, model.ArticleCoverImage);
             return CreatedAtAction(nameof(GetArticleOverview), new { id = article.ArticleId }, article);
         }
         //-----end 嘗試post-------
