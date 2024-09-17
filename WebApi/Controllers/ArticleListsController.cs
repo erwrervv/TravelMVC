@@ -49,7 +49,7 @@ namespace Travel.WebApi.Controllers
                         .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName))
                         .Select(x => new
                         {
-                            Image = x.ArticleCoverImage,
+                            ArticleCoverImageString = x.ArticleCoverImageString,
                             ArticleName = x.ArticleName,
                             ArticleId = x.ArticleId,
                             UpdateTime = x.UpdateTime
@@ -79,14 +79,14 @@ namespace Travel.WebApi.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticleList(int id, ArticleList articleList)
-        {
+        {   
             if (id != articleList.ArticleListId)
             {
                 return BadRequest();
             }
 
             _context.Entry(articleList).State = EntityState.Modified;
-
+            
             try
             {
                 await _context.SaveChangesAsync();

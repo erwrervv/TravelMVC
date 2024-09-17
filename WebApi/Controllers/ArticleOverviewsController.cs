@@ -100,12 +100,7 @@ namespace Travel.WebApi.Controllers
             
             var oldTag = oldarticleOverviewData.Tag.Split(",").Select(s => s.Trim()); //拆分原資料tag
             var newtag = articleOverview.Tag.Split(",").Select(s => s.Trim());//拆分新資料tag
-            var duplicateTag = oldTag.Intersect(newtag); //去除重複TAG
-            if (duplicateTag.Any())
-            {
-                var str = string.Join(",", duplicateTag);
-                return BadRequest($"此文章已加入過以下文章列表：{articleOverview.Tag}");
-            }
+            var mergeTag = oldTag.Concat(newtag).Distinct(); //先找出重複TAG並去除
             if (articleOverview.ArticleCoverImage != null)
             {
                 var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
@@ -114,10 +109,10 @@ namespace Travel.WebApi.Controllers
                 await System.IO.File.WriteAllBytesAsync(filePath, articleOverview.ArticleCoverImage);//寫入資料
             }
             //以下為修改後賦值
+            oldarticleOverviewData.Tag=string.Join(",", mergeTag); //用逗號組成新值
             oldarticleOverviewData.ArticlePictures = articleOverview.ArticlePictures ?? oldarticleOverviewData.ArticlePictures;
             oldarticleOverviewData.ArticleContent = articleOverview.ArticleContent ?? oldarticleOverviewData.ArticleContent;
             oldarticleOverviewData.ArticleName = articleOverview.ArticleName ?? oldarticleOverviewData.ArticleName;
-            oldarticleOverviewData.Tag = articleOverview.Tag ?? oldarticleOverviewData.Tag;
             oldarticleOverviewData.UpdateTime = DateTime.Now; // 更新修改時間
             oldarticleOverviewData.MemberuniqueId = articleOverview.MemberuniqueId ?? oldarticleOverviewData.MemberuniqueId;
             if (id != articleOverview.ArticleId)
