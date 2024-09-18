@@ -171,8 +171,11 @@ namespace Travel.WebApi.Controllers
                 MemberuniqueId = model.MemberuniqueId,
                 ArticleName = model.ArticleName,
                 ArticleContent = model.ArticleContent,
-                CreateTime = model.CreateTime ?? DateTime.UtcNow,
-                UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
+                //CreateTime = model.CreateTime ?? DateTime.UtcNow,
+                CreateTime = model.CreateTime ?? TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time")),
+                
+                //UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
+                UpdateTime = model.UpdateTime ?? TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time")),
                 //ArticleCoverImage = model.ArticleCoverImage,
                 Tag = model.Tag,
                 //ArticleCoverImageString  //規定存入格式
@@ -221,7 +224,7 @@ namespace Travel.WebApi.Controllers
         public IActionResult GetPaged([FromQuery] PageInfo page)
         {
             //初始化分頁
-            if (page.PageSize <= 0) page.PageSize = 5;
+            if (page.PageSize <= 0) page.PageSize = 6;
             if (page.PageNumber <= 0) page.PageNumber = 1;
             var query = _context.ArticleOverviews.Include(m => m.Memberunique).AsQueryable();
 
