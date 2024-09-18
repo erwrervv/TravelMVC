@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Travel.WebApi.Models;
 using Travel.WebApi.ViewModels;
 using Travel.WebApi.DTO;
+using Microsoft.AspNetCore.Authorization;
 namespace Travel.WebApi.Controllers
 {
     [Route("api/[controller]")]
