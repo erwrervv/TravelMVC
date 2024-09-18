@@ -105,10 +105,12 @@ namespace Travel.WebApi.Controllers
             {
                 var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
                 var directoryPath = Path.Combine(rootPath, "articleId", id.ToString()); // 組檔案相對路徑 (如果是全新文章則會創建資料夾)
-                var filePath = Path.Combine(directoryPath, "1.jpg"); //ex: /images/articleId/ID/1.jpg
+                var filePath = Path.Combine(directoryPath, $"1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg"); //ex: /images/articleId/ID/1.jpg
                 await System.IO.File.WriteAllBytesAsync(filePath, articleOverview.ArticleCoverImage);//寫入資料
+                oldarticleOverviewData.ArticleCoverImageString= @$"/images\articleId\{articleOverview.ArticleId}\1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg";
             }
-            //以下為修改後賦值
+            //以下為修改後賦值-{articleOverview.UpdateTime.Value.ToString("yyyy-MM-dd")}
+            
             oldarticleOverviewData.Tag=string.Join(",", mergeTag); //用逗號組成新值
             oldarticleOverviewData.ArticlePictures = articleOverview.ArticlePictures ?? oldarticleOverviewData.ArticlePictures;
             oldarticleOverviewData.ArticleContent = articleOverview.ArticleContent ?? oldarticleOverviewData.ArticleContent;
@@ -179,10 +181,10 @@ namespace Travel.WebApi.Controllers
             //流程：先產生出當前資料真實ID 
             //1.交由後續組成路徑使用
             //2.ArticleCoverImageString欄位路徑組成為真實ID
-            article.ArticleCoverImageString = @$"/images\articleId\{article.ArticleId}\1.jpg";
+            article.ArticleCoverImageString = @$"/images\articleId\{article.ArticleId}\1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg";
             var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
             var directoryPath = Path.Combine(rootPath, "articleId", article.ArticleId.ToString()); // 組檔案相對路徑 (如果是全新文章則會創建資料夾)
-            var filePath = Path.Combine(directoryPath, "1.jpg"); //ex: /images/articleId/ID/1.jpg
+            var filePath = Path.Combine(directoryPath, $"1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg"); //ex: /images/articleId/ID/1.jpg
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);//判斷式: 不存在則創建              
@@ -229,7 +231,7 @@ namespace Travel.WebApi.Controllers
             }
             else if (!string.IsNullOrEmpty(page.SearchTagName))
             {
-                query = query.Where(x => x.Tag == page.SearchTagName);
+                query = query.AsEnumerable().Where(x => x.Tag.Split(",").Any(x => x.Trim() == page.SearchTagName)).AsQueryable();
             }
             //無搜尋文字則全部取回
             var result = query.OrderByDescending(x => x.UpdateTime)
