@@ -172,10 +172,10 @@ namespace Travel.WebApi.Controllers
                 ArticleName = model.ArticleName,
                 ArticleContent = model.ArticleContent,
                 //CreateTime = model.CreateTime ?? DateTime.UtcNow,
-                CreateTime = model.CreateTime ?? TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time")),
+                CreateTime =DateTime.Now,
                 
                 //UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
-                UpdateTime = model.UpdateTime ?? TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time")),
+                UpdateTime = DateTime.Now,
                 //ArticleCoverImage = model.ArticleCoverImage,
                 Tag = model.Tag,
                 //ArticleCoverImageString  //規定存入格式
@@ -235,7 +235,7 @@ namespace Travel.WebApi.Controllers
             }
             else if (!string.IsNullOrEmpty(page.SearchTagName))
             {
-                query = query.AsEnumerable().Where(x => x.Tag.Split(",").Any(x => x.Trim() == page.SearchTagName)).AsQueryable();
+                query = query.AsEnumerable().Where(x => x.Tag.Split(",").Any(x => x.Trim() == page.SearchTagName.Trim())).AsQueryable();
             }
             //無搜尋文字則全部取回
             var result = query.OrderByDescending(x => x.UpdateTime)

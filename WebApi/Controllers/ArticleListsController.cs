@@ -42,11 +42,11 @@ namespace Travel.WebApi.Controllers
                     ArticleRepositories = item.ArticleRepositories,
                     MemberName = item.Memberunique.MemberName,
                     UpdateTime = articleOverviews
-                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName))
+                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
                         .Select(x => x.UpdateTime)
                         .ToList(),
                     PartialArticleOverviews = articleOverviews
-                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName))
+                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName..Trim()))
                         .Select(x => new
                         {
                             ArticleCoverImageString = x.ArticleCoverImageString,
