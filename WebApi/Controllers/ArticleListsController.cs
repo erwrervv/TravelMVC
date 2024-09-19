@@ -46,7 +46,7 @@ namespace Travel.WebApi.Controllers
                         .Select(x => x.UpdateTime)
                         .ToList(),
                     PartialArticleOverviews = articleOverviews
-                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName..Trim()))
+                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
                         .Select(x => new
                         {
                             ArticleCoverImageString = x.ArticleCoverImageString,

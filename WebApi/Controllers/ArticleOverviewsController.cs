@@ -223,7 +223,7 @@ namespace Travel.WebApi.Controllers
         [HttpGet("GetPaged")]
         public IActionResult GetPaged([FromQuery] PageInfo page)
         {
-            //初始化分頁
+            //初始化分頁，給予默認值
             if (page.PageSize <= 0) page.PageSize = 6;
             if (page.PageNumber <= 0) page.PageNumber = 1;
             var query = _context.ArticleOverviews.Include(m => m.Memberunique).AsQueryable();
