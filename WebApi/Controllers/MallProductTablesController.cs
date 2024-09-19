@@ -39,8 +39,15 @@ namespace Travel.WebApi.Controllers
             {
                 return NotFound();
             }
-
-            return mallProductTable;
+            string base64Image = Convert.ToBase64String(mallProductTable.Pimage);
+            string imageDataUrl = $"data:image/png;base64,{base64Image}";
+            return Ok(new
+            {
+                mallProductTable.MallProductTableId,
+                mallProductTable.MallProductName,
+                mallProductTable.GoldAmount,
+                Pimage = imageDataUrl  // Use base64 string as the image source
+            });
         }
 
         // PUT: api/MallProductTables/5
@@ -104,6 +111,27 @@ namespace Travel.WebApi.Controllers
         private bool MallProductTableExists(int id)
         {
             return _context.MallProductTables.Any(e => e.MallProductTableId == id);
+        }
+
+
+        [HttpGet("get-product/{id}")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            var product = await _context.MallProductTables.FindAsync(id);
+            if (product == null)
+                return NotFound();
+
+            // Convert the image to base64 string
+            string base64Image = Convert.ToBase64String(product.Pimage);
+            string imageDataUrl = $"data:image/png;base64,{base64Image}";
+
+            // Return the product data along with base64 image string
+            return Ok(new
+            {
+                product.MallProductTableId,
+                product.MallProductName,
+                Pimage = imageDataUrl  // Use base64 string as the image source
+            });
         }
     }
 }
