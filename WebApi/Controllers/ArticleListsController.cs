@@ -41,11 +41,15 @@ namespace Travel.WebApi.Controllers
                     ArticleListName = item.ArticleListName,
                     ArticleRepositories = item.ArticleRepositories,
                     MemberName = item.Memberunique.MemberName,
+                    //UpdateTime = articleOverviews
+                    //    .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
+                    //    .Select(x => x.UpdateTime)
+                    //    .ToList(),
                     UpdateTime = articleOverviews
-                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
-                        .Select(x => x.UpdateTime)
-                        .ToList(),
-                    PartialArticleOverviews = articleOverviews
+    .Where(x => x.Tag.Split(",").Any(tag => tag.Trim() == item.ArticleListName.Trim()))
+    .Select(x => x.UpdateTime != null ? x.UpdateTime : DateTime.Now) // 處理 null 值
+    .ToList(),
+            PartialArticleOverviews = articleOverviews
                         .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
                         .Select(x => new
                         {
