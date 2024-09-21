@@ -85,6 +85,8 @@ public partial class FinalContext : DbContext
 
     public virtual DbSet<ProfessionTable> ProfessionTables { get; set; }
 
+    public virtual DbSet<Shoprecord> Shoprecords { get; set; }
+
     public virtual DbSet<Storedrecord> Storedrecords { get; set; }
 
     public virtual DbSet<Tracklist> Tracklists { get; set; }
@@ -782,6 +784,27 @@ public partial class FinalContext : DbContext
             entity.Property(e => e.ProfessionName)
                 .HasMaxLength(50)
                 .HasColumnName("profession_name");
+        });
+
+        modelBuilder.Entity<Shoprecord>(entity =>
+        {
+            entity.ToTable("shoprecord");
+
+            entity.Property(e => e.ShopRecordid).HasColumnName("shop_recordid");
+            entity.Property(e => e.Address).HasColumnName("address");
+            entity.Property(e => e.ExchangeStatus).HasColumnName("exchange_status");
+            entity.Property(e => e.MallProductQuantity).HasColumnName("mall_product_quantity");
+            entity.Property(e => e.MallProductTableId).HasColumnName("mall_product_table_id");
+            entity.Property(e => e.MemberName)
+                .HasMaxLength(50)
+                .HasColumnName("member_name");
+            entity.Property(e => e.MemberPhone)
+                .HasMaxLength(20)
+                .HasColumnName("member_phone");
+            entity.Property(e => e.PurchaseTime)
+                .HasColumnType("datetime")
+                .HasColumnName("purchase_time");
+            entity.Property(e => e.TotalPrice).HasColumnName("total_price");
         });
 
         modelBuilder.Entity<Storedrecord>(entity =>
