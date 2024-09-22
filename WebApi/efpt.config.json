@@ -1,0 +1,214 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "FinalContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Travel.WebApi",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[accommodation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[article_customization_list]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[article_list]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[article_overview]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[article_picture]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[article_repository]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[basic_commodity_information]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[basic_member_information]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[bodyshape_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[comment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[commodity_interactive]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[commodity_interest]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[commodity_language]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[commodity_picture]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[coupon_discount_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[coupon_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[coupontable]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[gold_exchange_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[interactive_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[interest_table ]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[language_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[level_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[mall_product_purchase_record]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[mall_product_space]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[mall_product_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[members_like]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[offline_area_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[offline_type_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[online_type_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[order]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[product_datetime]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[product_offline_topics]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[product_online_topics]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[product_travel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[profession_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[shoprecord]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[shoprecord_detail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[storedrecord]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tracklist]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[travel_details]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[travel_transportation_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[travelarea_table]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[travelpictures_table]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}
