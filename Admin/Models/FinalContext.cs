@@ -87,6 +87,8 @@ public partial class FinalContext : DbContext
 
     public virtual DbSet<Shoprecord> Shoprecords { get; set; }
 
+    public virtual DbSet<ShoprecordDetail> ShoprecordDetails { get; set; }
+
     public virtual DbSet<Storedrecord> Storedrecords { get; set; }
 
     public virtual DbSet<Tracklist> Tracklists { get; set; }
@@ -751,10 +753,14 @@ public partial class FinalContext : DbContext
 
             entity.Property(e => e.TravelId).HasColumnName("travel_id");
             entity.Property(e => e.AllDays).HasColumnName("All_days");
+            entity.Property(e => e.Pictures).HasColumnName("pictures");
             entity.Property(e => e.Price)
                 .HasColumnType("money")
                 .HasColumnName("price");
             entity.Property(e => e.ProductShow).HasColumnName("product_show");
+            entity.Property(e => e.Tag)
+                .HasMaxLength(50)
+                .HasColumnName("tag");
             entity.Property(e => e.TravelDatetime)
                 .HasColumnType("datetime")
                 .HasColumnName("travel_datetime");
@@ -793,8 +799,6 @@ public partial class FinalContext : DbContext
             entity.Property(e => e.ShopRecordid).HasColumnName("shop_recordid");
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.ExchangeStatus).HasColumnName("exchange_status");
-            entity.Property(e => e.MallProductQuantity).HasColumnName("mall_product_quantity");
-            entity.Property(e => e.MallProductTableId).HasColumnName("mall_product_table_id");
             entity.Property(e => e.MemberName)
                 .HasMaxLength(50)
                 .HasColumnName("member_name");
@@ -804,7 +808,32 @@ public partial class FinalContext : DbContext
             entity.Property(e => e.PurchaseTime)
                 .HasColumnType("datetime")
                 .HasColumnName("purchase_time");
+            entity.Property(e => e.Shoporderid)
+                .HasMaxLength(50)
+                .HasColumnName("shoporderid");
             entity.Property(e => e.TotalPrice).HasColumnName("total_price");
+        });
+
+        modelBuilder.Entity<ShoprecordDetail>(entity =>
+        {
+            entity.ToTable("shoprecord_detail");
+
+            entity.Property(e => e.ShoprecordDetailid).HasColumnName("shoprecord_detailid");
+            entity.Property(e => e.MallProductName).HasColumnName("mall_product_name");
+            entity.Property(e => e.MallProductQuantity).HasColumnName("mall_product_quantity");
+            entity.Property(e => e.MallProductTableId).HasColumnName("mall_product_table_id");
+            entity.Property(e => e.ShopRecordid).HasColumnName("shop_recordid");
+            entity.Property(e => e.Shoporderid)
+                .HasMaxLength(50)
+                .HasColumnName("shoporderid");
+
+            entity.HasOne(d => d.MallProductTable).WithMany(p => p.ShoprecordDetails)
+                .HasForeignKey(d => d.MallProductTableId)
+                .HasConstraintName("FK_shoprecord_detail_mall_product_table");
+
+            entity.HasOne(d => d.ShopRecord).WithMany(p => p.ShoprecordDetails)
+                .HasForeignKey(d => d.ShopRecordid)
+                .HasConstraintName("FK_shoprecord_detail_shoprecord");
         });
 
         modelBuilder.Entity<Storedrecord>(entity =>

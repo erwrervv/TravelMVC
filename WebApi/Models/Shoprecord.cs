@@ -19,7 +19,7 @@ public partial class Shoprecord
 
     public string? Address { get; set; }
 
-    public int? MallProductTableId { get; set; }
+    public string? Shoporderid { get; set; }
 
-    public int? MallProductQuantity { get; set; }
+    public virtual ICollection<ShoprecordDetail> ShoprecordDetails { get; set; } = new List<ShoprecordDetail>();
 }
