@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.WebApi.Models;
-using Travel.WebApi.DTO;
 
 
 namespace Travel.WebApi.Controllers
