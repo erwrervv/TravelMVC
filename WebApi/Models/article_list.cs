@@ -5,13 +5,15 @@ using System.Collections.Generic;
 
 namespace Travel.WebApi.Models;
 
-public partial class tracklist
+public partial class article_list
 {
-    public int tracklist_id { get; set; }
+    public int article_list_id { get; set; }
+
+    public string article_list_name { get; set; }
 
     public int? memberunique_id { get; set; }
 
-    public int? track_member_id { get; set; }
+    public virtual ICollection<article_repository> article_repository { get; set; } = new List<article_repository>();
 
     public virtual basic_member_information memberunique { get; set; }
 }

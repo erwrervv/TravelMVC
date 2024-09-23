@@ -5,19 +5,15 @@ using System.Collections.Generic;
 
 namespace Travel.WebApi.Models;
 
-public partial class comment
+public partial class article_picture
 {
-    public int comment_id { get; set; }
+    public int article_pictures_id { get; set; }
 
     public int? article_id { get; set; }
 
-    public int? memberunique_id { get; set; }
+    public byte[] article_pictures { get; set; }
 
-    public string comment_content { get; set; }
-
-    public DateTime? comment_date_time { get; set; }
+    public string ArticlePicturesString { get; set; }
 
     public virtual article_overview article { get; set; }
-
-    public virtual basic_member_information memberunique { get; set; }
 }

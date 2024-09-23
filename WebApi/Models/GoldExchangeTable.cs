@@ -13,5 +13,5 @@ public partial class GoldExchangeTable
 
     public decimal? StoredAmount { get; set; }
 
-    public virtual ICollection<Storedrecord> Storedrecords { get; set; } = new List<Storedrecord>();
+    public virtual ICollection<storedrecord> Storedrecords { get; set; } = new List<storedrecord>();
 }

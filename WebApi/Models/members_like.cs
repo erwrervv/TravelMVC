@@ -5,13 +5,17 @@ using System.Collections.Generic;
 
 namespace Travel.WebApi.Models;
 
-public partial class tracklist
+public partial class members_like
 {
-    public int tracklist_id { get; set; }
+    public int likes_id { get; set; }
+
+    public int? article_id { get; set; }
 
     public int? memberunique_id { get; set; }
 
-    public int? track_member_id { get; set; }
+    public bool? likes { get; set; }
+
+    public virtual article_overview article { get; set; }
 
     public virtual basic_member_information memberunique { get; set; }
 }

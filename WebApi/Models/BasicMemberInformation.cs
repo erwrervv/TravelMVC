@@ -45,7 +45,7 @@ public partial class BasicMemberInformation
 
     public virtual ICollection<BasicCommodityInformation> BasicCommodityInformations { get; set; } = new List<BasicCommodityInformation>();
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<comment> Comments { get; set; } = new List<comment>();
 
     public virtual LevelTable? Level { get; set; }
 
@@ -53,7 +53,7 @@ public partial class BasicMemberInformation
 
     public virtual ICollection<MembersLike> MembersLikes { get; set; } = new List<MembersLike>();
 
-    public virtual ICollection<Storedrecord> Storedrecords { get; set; } = new List<Storedrecord>();
+    public virtual ICollection<storedrecord> Storedrecords { get; set; } = new List<storedrecord>();
 
-    public virtual ICollection<Tracklist> Tracklists { get; set; } = new List<Tracklist>();
+    public virtual ICollection<tracklist> Tracklists { get; set; } = new List<tracklist>();
 }

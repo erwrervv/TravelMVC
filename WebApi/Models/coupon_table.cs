@@ -5,13 +5,11 @@ using System.Collections.Generic;
 
 namespace Travel.WebApi.Models;
 
-public partial class coupontable
+public partial class coupon_table
 {
     public int coupon_id { get; set; }
 
     public string couponame { get; set; }
 
     public string coupondiscount_id { get; set; }
-
-    public virtual coupon_discount_table coupondiscount { get; set; }
 }

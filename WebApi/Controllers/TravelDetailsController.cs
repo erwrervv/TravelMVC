@@ -13,9 +13,9 @@ namespace Travel.WebApi.Controllers
     [ApiController]
     public class TravelDetailsController : ControllerBase
     {
-        private readonly FinalContext _context;
+        private readonly finalContext _context;
 
-        public TravelDetailsController(FinalContext context)
+        public TravelDetailsController(finalContext context)
         {
             _context = context;
         }
@@ -38,7 +38,7 @@ namespace Travel.WebApi.Controllers
                 return NotFound();
             }
 
-            return travelDetail;
+            return Ok(travelDetail);
         }
 
         // PUT: api/TravelDetails/5

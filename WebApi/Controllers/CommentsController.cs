@@ -14,9 +14,9 @@ namespace Travel.WebApi.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly FinalContext _context;
+        private readonly finalContext _context;
 
-        public CommentsController(FinalContext context)
+        public CommentsController(finalContext context)
         {
             _context = context;
         }
@@ -98,7 +98,7 @@ namespace Travel.WebApi.Controllers
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(int id)
+        public async Task<ActionResult<comment>> GetComment(int id)
         {
             var comment = await _context.Comments.FindAsync(id);
 
@@ -115,7 +115,7 @@ namespace Travel.WebApi.Controllers
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
+        public async Task<IActionResult> PutComment(int id, comment comment)
         {
             if (id != comment.CommentId)
             {
@@ -146,7 +146,7 @@ namespace Travel.WebApi.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<ActionResult<comment>> PostComment(Comment comment)
         {
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();

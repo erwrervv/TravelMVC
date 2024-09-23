@@ -16,9 +16,9 @@ namespace Travel.WebApi.Controllers
     [ApiController]
     public class ArticleListsController : ControllerBase
     {
-        private readonly FinalContext _context;
+        private readonly finalContext _context;
 
-        public ArticleListsController(FinalContext context)
+        public ArticleListsController(finalContext context)
         {
             _context = context;
         }

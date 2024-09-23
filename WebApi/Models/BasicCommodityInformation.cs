@@ -21,7 +21,7 @@ public partial class BasicCommodityInformation
 
     public virtual BasicMemberInformation? Memberunique { get; set; }
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual ICollection<order> Orders { get; set; } = new List<order>();
 
     public virtual ICollection<ProductDatetime> ProductDatetimes { get; set; } = new List<ProductDatetime>();
 
