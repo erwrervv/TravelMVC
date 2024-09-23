@@ -746,10 +746,14 @@ public partial class FinalContext : DbContext
 
             entity.Property(e => e.TravelId).HasColumnName("travel_id");
             entity.Property(e => e.AllDays).HasColumnName("All_days");
+            entity.Property(e => e.Pictures).HasColumnName("pictures");
             entity.Property(e => e.Price)
                 .HasColumnType("money")
                 .HasColumnName("price");
             entity.Property(e => e.ProductShow).HasColumnName("product_show");
+            entity.Property(e => e.Tag)
+                .HasMaxLength(50)
+                .HasColumnName("tag");
             entity.Property(e => e.TravelDatetime)
                 .HasColumnType("datetime")
                 .HasColumnName("travel_datetime");

@@ -13,13 +13,13 @@ public partial class ShoprecordDetail
 
     public int? MallProductTableId { get; set; }
 
-    public string MallProductName { get; set; }
+    public string? MallProductName { get; set; }
 
     public int? MallProductQuantity { get; set; }
 
-    public string Shoporderid { get; set; }
+    public string? Shoporderid { get; set; }
 
-    public virtual MallProductTable MallProductTable { get; set; }
+    public virtual MallProductTable? MallProductTable { get; set; }
 
-    public virtual Shoprecord ShopRecord { get; set; }
+    public virtual Shoprecord? ShopRecord { get; set; }
 }

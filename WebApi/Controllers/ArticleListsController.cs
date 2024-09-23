@@ -41,18 +41,23 @@ namespace Travel.WebApi.Controllers
                     ArticleListName = item.ArticleListName,
                     ArticleRepositories = item.ArticleRepositories,
                     MemberName = item.Memberunique.MemberName,
+                    //UpdateTime = articleOverviews
+                    //    .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
+                    //    .Select(x => x.UpdateTime)
+                    //    .ToList(),
                     UpdateTime = articleOverviews
-                        .Where(x => x.Tag == item.ArticleListName)
-                        .Select(x => x.UpdateTime)
-                        .ToList(),
-                    PartialArticleOverviews = articleOverviews
-                        .Where(x => x.Tag == item.ArticleListName)
-                        .Select(x =>new 
+    .Where(x => x.Tag.Split(",").Any(tag => tag.Trim() == item.ArticleListName.Trim()))
+    .Select(x => x.UpdateTime != null ? x.UpdateTime : DateTime.Now) // 處理 null 值
+    .ToList(),
+            PartialArticleOverviews = articleOverviews
+                        .Where(x => x.Tag.Split(",").Any(x => x.Trim() == item.ArticleListName.Trim()))
+                        .Select(x => new
                         {
-                            Image=x.ArticleCoverImage,
-                            ArticleId=x.ArticleId,
-                            UpdateTime =x.UpdateTime
-                        } )
+                            ArticleCoverImageString = x.ArticleCoverImageString,
+                            ArticleName = x.ArticleName,
+                            ArticleId = x.ArticleId,
+                            UpdateTime = x.UpdateTime
+                        })
                         .ToList()
                 }).ToList();
 
@@ -78,14 +83,14 @@ namespace Travel.WebApi.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticleList(int id, ArticleList articleList)
-        {
+        {   
             if (id != articleList.ArticleListId)
             {
                 return BadRequest();
             }
 
             _context.Entry(articleList).State = EntityState.Modified;
-
+            
             try
             {
                 await _context.SaveChangesAsync();

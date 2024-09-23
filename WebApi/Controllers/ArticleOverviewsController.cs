@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Travel.WebApi.Models;
 using Travel.WebApi.ViewModels;
 using Travel.WebApi.DTO;
+using Microsoft.AspNetCore.Authorization;
 namespace Travel.WebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -90,13 +91,38 @@ namespace Travel.WebApi.Controllers
         // PUT: api/ArticleOverviews/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticleOverview(int id,[FromBody] ArticleOverview articleOverview)
+        public async Task<IActionResult> PutArticleOverview(int id, [FromBody] ArticleOverview articleOverview)
         {
+            var oldarticleOverviewData = _context.ArticleOverviews.Find(id);
+            if (oldarticleOverviewData == null)
+            {
+                return NotFound("此ID無對應文章");
+            }
+            
+            var oldTag = oldarticleOverviewData.Tag.Split(",").Select(s => s.Trim()); //拆分原資料tag
+            var newtag = articleOverview.Tag.Split(",").Select(s => s.Trim());//拆分新資料tag
+            var mergeTag = oldTag.Concat(newtag).Distinct(); //先找出重複TAG並去除
+            if (articleOverview.ArticleCoverImage != null)
+            {
+                var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
+                var directoryPath = Path.Combine(rootPath, "articleId", id.ToString()); // 組檔案相對路徑 (如果是全新文章則會創建資料夾)
+                var filePath = Path.Combine(directoryPath, $"1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg"); //ex: /images/articleId/ID/1.jpg
+                await System.IO.File.WriteAllBytesAsync(filePath, articleOverview.ArticleCoverImage);//寫入資料
+                oldarticleOverviewData.ArticleCoverImageString= @$"/images\articleId\{articleOverview.ArticleId}\1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg";
+            }
+            //以下為修改後賦值-{articleOverview.UpdateTime.Value.ToString("yyyy-MM-dd")}
+            
+            oldarticleOverviewData.Tag=string.Join(",", mergeTag); //用逗號組成新值
+            oldarticleOverviewData.ArticlePictures = articleOverview.ArticlePictures ?? oldarticleOverviewData.ArticlePictures;
+            oldarticleOverviewData.ArticleContent = articleOverview.ArticleContent ?? oldarticleOverviewData.ArticleContent;
+            oldarticleOverviewData.ArticleName = articleOverview.ArticleName ?? oldarticleOverviewData.ArticleName;
+            oldarticleOverviewData.UpdateTime = DateTime.Now; // 更新修改時間
+            oldarticleOverviewData.MemberuniqueId = articleOverview.MemberuniqueId ?? oldarticleOverviewData.MemberuniqueId;
             if (id != articleOverview.ArticleId)
             {
                 return BadRequest();
             }
-            _context.Entry(articleOverview).State = EntityState.Modified;
+            _context.Entry(oldarticleOverviewData).State = EntityState.Modified;
 
             try
             {
@@ -139,23 +165,37 @@ namespace Travel.WebApi.Controllers
             {
                 return BadRequest("Invalid article data.");
             }
-
             // 根据前端传来的数据创建一个新的 ArticleOverview 实体
             var article = new ArticleOverview
             {
                 MemberuniqueId = model.MemberuniqueId,
                 ArticleName = model.ArticleName,
                 ArticleContent = model.ArticleContent,
-                CreateTime = model.CreateTime ?? DateTime.UtcNow,
-                UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
-                ArticleCoverImage = model.ArticleCoverImage,
+                //CreateTime = model.CreateTime ?? DateTime.UtcNow,
+                CreateTime =DateTime.Now,
+                
+                //UpdateTime = model.UpdateTime ?? DateTime.UtcNow,
+                UpdateTime = DateTime.Now,
+                //ArticleCoverImage = model.ArticleCoverImage,
                 Tag = model.Tag,
-
+                //ArticleCoverImageString  //規定存入格式
             };
-
             _context.ArticleOverviews.Add(article);
             await _context.SaveChangesAsync();
-
+            //流程：先產生出當前資料真實ID 
+            //1.交由後續組成路徑使用
+            //2.ArticleCoverImageString欄位路徑組成為真實ID
+            article.ArticleCoverImageString = @$"/images\articleId\{article.ArticleId}\1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg";
+            var rootPath = Path.Combine(Directory.GetCurrentDirectory(), "images"); //找當前專案的根目錄中的images
+            var directoryPath = Path.Combine(rootPath, "articleId", article.ArticleId.ToString()); // 組檔案相對路徑 (如果是全新文章則會創建資料夾)
+            var filePath = Path.Combine(directoryPath, $"1-{DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss")}.jpg"); //ex: /images/articleId/ID/1.jpg
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);//判斷式: 不存在則創建              
+            }
+            _context.ArticleOverviews.Update(article);
+            await _context.SaveChangesAsync();
+            await System.IO.File.WriteAllBytesAsync(filePath, model.ArticleCoverImage);
             return CreatedAtAction(nameof(GetArticleOverview), new { id = article.ArticleId }, article);
         }
         //-----end 嘗試post-------
@@ -183,43 +223,49 @@ namespace Travel.WebApi.Controllers
         [HttpGet("GetPaged")]
         public IActionResult GetPaged([FromQuery] PageInfo page)
         {
-            if (page.PageSize <= 0) page.PageSize = 5;
+            //初始化分頁，給予默認值
+            if (page.PageSize <= 0) page.PageSize = 6;
             if (page.PageNumber <= 0) page.PageNumber = 1;
-            var totalActicle = _context.ArticleOverviews.Count(); //計算總共筆數
+            var query = _context.ArticleOverviews.Include(m => m.Memberunique).AsQueryable();
 
-
-            var acticleAllData = _context.ArticleOverviews.Include(m => m.Memberunique).OrderByDescending(x => x.UpdateTime)
-                .Skip((page.PageNumber - 1) * page.PageSize) //Skip  假設目前第1頁 1-1=0 *預設筆數(5) 所以跳過0筆
-                .Take(page.PageSize).Select(x => new
-                {
-                    ArticleId = x.ArticleId,
-                    ArticleName = x.ArticleName,
-                    ArticleContent = x.ArticleContent,
-                    CreateTime = x.CreateTime,
-                    ArticleCoverImage = x.ArticleCoverImage,
-                    UpdateTime = x.UpdateTime,
-                    MemberName = x.Memberunique.MemberName
-                })//取得幾筆 (5)
-                .ToList();
+            //如果有搜尋文章標題 則改變語法
+            if (!string.IsNullOrEmpty(page.SearchKeyword))
+            {
+                query = query.Where(x => x.ArticleName.Contains(page.SearchKeyword));
+            }
+            else if (!string.IsNullOrEmpty(page.SearchTagName))
+            {
+                query = query.AsEnumerable().Where(x => x.Tag.Split(",").Any(x => x.Trim() == page.SearchTagName.Trim())).AsQueryable();
+            }
+            //無搜尋文字則全部取回
+            var result = query.OrderByDescending(x => x.UpdateTime)
+              .Skip((page.PageNumber - 1) * page.PageSize) //Skip  假設目前第1頁 1-1=0 *預設筆數(5) 所以跳過0筆
+              .Take(page.PageSize)//取得幾筆 (5)
+              .Select(x => new
+              {
+                  ArticleId = x.ArticleId,
+                  ArticleName = x.ArticleName,
+                  ArticleContent = x.ArticleContent,
+                  CreateTime = x.CreateTime,
+                  ArticleCoverImage = x.ArticleCoverImage,
+                  UpdateTime = x.UpdateTime,
+                  MemberName = x.Memberunique.MemberName,
+                  Tag = x.Tag,
+                  //ImageUrl = Path.Combine("/images", "articleId", x.ArticleId.ToString(), "1.jpg")// 圖片相對的 URL 
+                  ArticleCoverImageString = x.ArticleCoverImageString
+              })
+              .ToList();
+            //計算總共筆數
+            var totalActicle = query.Count();
             var pagedResult = new
             {
                 TotalCount = totalActicle, //總共筆數
                 PageSize = page.PageSize, //每次數量
                 PageNumber = page.PageNumber, //第幾頁
                 TotalPages = (int)Math.Ceiling(totalActicle / (double)page.PageSize), //總共幾個分頁
-                List = acticleAllData //資料源
+                List = result//資料源
             };
             return Ok(pagedResult);
-        }
-        [HttpGet("GetSearchData")]
-        public IActionResult GetSearchData(string keyword)
-        {
-            if (string.IsNullOrEmpty(keyword))
-            {
-                return BadRequest("Keyword cannot be empty");
-            }
-            var searchResults = _context.ArticleOverviews.Where(x => x.ArticleName.Contains(keyword)).OrderByDescending(x => x.UpdateTime).ToList();
-            return Ok(searchResults);
         }
     }
 }

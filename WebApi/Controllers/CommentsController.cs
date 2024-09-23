@@ -148,6 +148,7 @@ namespace Travel.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
+            comment.CommentDateTime= DateTime.Now;
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
