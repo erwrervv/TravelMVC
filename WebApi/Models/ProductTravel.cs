@@ -25,7 +25,7 @@ public partial class ProductTravel
 
     public string? Tag { get; set; }
 
-    public byte[]? Pictures { get; set; }
+    public string? Pictures { get; set; }
 
     public virtual ICollection<TravelDetail> TravelDetails { get; set; } = new List<TravelDetail>();
 
