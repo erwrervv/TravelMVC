@@ -31,17 +31,38 @@ namespace Travel.WebApi.Controllers
 
         // GET: api/Shoprecords/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ShoprecordDTO>> GetShoprecord(int id)
+        
+        public async Task<ActionResult<ShoprecordDTO>> GetShopRecordDetails(int id)
         {
-            var shoprecordDTO = await _context.Shoprecords.FindAsync(id);
+            var shopRecord = await _context.Shoprecords
+                .Include(sr => sr.ShoprecordDetails)
+                .FirstOrDefaultAsync(sr => sr.ShopRecordid == id);
 
-            if (shoprecordDTO == null)
+            if (shopRecord == null)
             {
                 return NotFound();
             }
 
+            var shoprecordDTO = new ShoprecordDTO
+            {
+                ShopRecordid = shopRecord.ShopRecordid,
+                MemberName = shopRecord.MemberName,
+                MemberPhone = shopRecord.MemberPhone,
+                Address = shopRecord.Address,
+                TotalPrice = shopRecord.TotalPrice,
+                PurchaseTime = shopRecord.PurchaseTime,
+                ExchangeStatus = shopRecord.ExchangeStatus,
+                AllProducts = shopRecord.ShoprecordDetails.Select(d => new ShoprecordDetailDTO
+                {
+                    MallProductTableId = d.MallProductTableId,
+                    MallProductName = d.MallProductName,
+                    MallProductQuantity = d.MallProductQuantity
+                }).ToList()
+            };
+
             return Ok(shoprecordDTO);
         }
+
 
         // PUT: api/Shoprecords/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -109,14 +130,14 @@ namespace Travel.WebApi.Controllers
                             MallProductTableId = product.MallProductTableId,
                             MallProductName = product.MallProductName,
                             MallProductQuantity = product.MallProductQuantity,
-                            Shoporderid = product.Shoporderid,
+                           
                         };
 
                         _context.ShoprecordDetails.Add(shoprecordDetail);
                     }
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
-                    return Ok(dto);
+                    return Ok((new { shopRecordid = shoprecord.ShopRecordid }));
                 }
                 catch (Exception ex)
                 {
@@ -124,7 +145,7 @@ namespace Travel.WebApi.Controllers
                     await transaction.RollbackAsync();
 
                 }
-                return StatusCode(500, "An error occurred while processing the request: " );
+                return StatusCode(500, "訂單處理發生錯誤" );
             }
 
         
