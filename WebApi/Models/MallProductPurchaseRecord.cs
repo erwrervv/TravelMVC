@@ -16,4 +16,6 @@ public partial class MallProductPurchaseRecord
     public bool? ExchangeStatus { get; set; }
 
     public DateTime? ExchangeTime { get; set; }
+
+    public virtual MallProductTable MallProductTable { get; set; }
 }

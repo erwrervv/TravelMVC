@@ -529,6 +529,10 @@ public partial class FinalContext : DbContext
             entity.Property(e => e.MemberName)
                 .HasMaxLength(50)
                 .HasColumnName("member_name");
+
+            entity.HasOne(d => d.MallProductTable).WithMany(p => p.MallProductPurchaseRecords)
+                .HasForeignKey(d => d.MallProductTableId)
+                .HasConstraintName("FK_mall_product_purchase_record_mall_product_table");
         });
 
         modelBuilder.Entity<MallProductSpace>(entity =>

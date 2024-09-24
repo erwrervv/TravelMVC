@@ -79,24 +79,57 @@ namespace Travel.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<ShoprecordDTO>> PostShoprecord(ShoprecordDTO dto)
         {
-            var shoprecord = new Shoprecord
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                MemberName = dto.MemberName,
-                TotalPrice = dto.TotalPrice,
-                MemberPhone = dto.MemberPhone,
-                Address = dto.Address,
-                Shoporderid = dto.Shoporderid,
-                PurchaseTime = DateTime.Now,
-                ExchangeStatus = true,
-            };
+                try
+                {
+                    var shoprecord = new Shoprecord
+                    {
+                        MemberName = dto.MemberName,
+                        TotalPrice = dto.TotalPrice,
+                        MemberPhone = dto.MemberPhone,
+                        Address = dto.Address,
+                        Shoporderid = dto.Shoporderid,
+                        PurchaseTime = DateTime.Now,
+                        ExchangeStatus = true,
+                    };
 
-            // 将新的实体添加到数据库
-            _context.Shoprecords.Add(shoprecord);
-            await _context.SaveChangesAsync();
+                    // 将新的实体添加到数据库
+                    _context.Shoprecords.Add(shoprecord);
+                    await _context.SaveChangesAsync();
 
-            // 返回创建的资源，包含新生成的 ID
-            return CreatedAtAction("GetShoprecord", new { id = shoprecord.ShopRecordid }, shoprecord);
-        }
+                    //這邊是9/24新加的部分
+                    int shopRecordId = shoprecord.ShopRecordid;
+
+                    foreach (var product in dto.AllProducts)
+                    {
+                        var shoprecordDetail = new ShoprecordDetail
+                        {
+                            ShopRecordid = shopRecordId, // 關聯主表
+                            MallProductTableId = product.MallProductTableId,
+                            MallProductName = product.MallProductName,
+                            MallProductQuantity = product.MallProductQuantity,
+                            Shoporderid = product.Shoporderid,
+                        };
+
+                        _context.ShoprecordDetails.Add(shoprecordDetail);
+                    }
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return Ok(dto);
+                }
+                catch (Exception ex)
+                {
+                    // 回滾事務
+                    await transaction.RollbackAsync();
+
+                }
+                return StatusCode(500, "An error occurred while processing the request: " );
+            }
+
+        
+
+            }
 
         //post 以id
         [HttpPost("{id}")]
