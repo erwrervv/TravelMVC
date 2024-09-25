@@ -31,17 +31,38 @@ namespace Travel.WebApi.Controllers
 
         // GET: api/Shoprecords/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ShoprecordDTO>> GetShoprecord(int id)
-        {
-            var shoprecordDTO = await _context.Shoprecords.FindAsync(id);
 
-            if (shoprecordDTO == null)
+        public async Task<ActionResult<ShoprecordDTO>> GetShopRecordDetails(int id)
+        {
+            var shopRecord = await _context.Shoprecords
+                .Include(sr => sr.ShoprecordDetails)
+                .FirstOrDefaultAsync(sr => sr.ShopRecordid == id);
+
+            if (shopRecord == null)
             {
                 return NotFound();
             }
 
+            var shoprecordDTO = new ShoprecordDTO
+            {
+                ShopRecordid = shopRecord.ShopRecordid,
+                MemberName = shopRecord.MemberName,
+                MemberPhone = shopRecord.MemberPhone,
+                Address = shopRecord.Address,
+                TotalPrice = shopRecord.TotalPrice,
+                PurchaseTime = shopRecord.PurchaseTime,
+                ExchangeStatus = shopRecord.ExchangeStatus,
+                AllProducts = shopRecord.ShoprecordDetails.Select(d => new ShoprecordDetailDTO
+                {
+                    MallProductTableId = d.MallProductTableId,
+                    MallProductName = d.MallProductName,
+                    MallProductQuantity = d.MallProductQuantity
+                }).ToList()
+            };
+
             return Ok(shoprecordDTO);
         }
+
 
         // PUT: api/Shoprecords/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -79,23 +100,56 @@ namespace Travel.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<ShoprecordDTO>> PostShoprecord(ShoprecordDTO dto)
         {
-            var shoprecord = new Shoprecord
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                MemberName = dto.MemberName,
-                TotalPrice = dto.TotalPrice,
-                MemberPhone = dto.MemberPhone,
-                Address = dto.Address,
-                Shoporderid = dto.Shoporderid,
-                PurchaseTime = DateTime.Now,
-                ExchangeStatus = true,
-            };
+                try
+                {
+                    var shoprecord = new Shoprecord
+                    {
+                        MemberName = dto.MemberName,
+                        TotalPrice = dto.TotalPrice,
+                        MemberPhone = dto.MemberPhone,
+                        Address = dto.Address,
+                        Shoporderid = dto.Shoporderid,
+                        PurchaseTime = DateTime.Now,
+                        ExchangeStatus = true,
+                    };
 
-            // 将新的实体添加到数据库
-            _context.Shoprecords.Add(shoprecord);
-            await _context.SaveChangesAsync();
+                    // 将新的实体添加到数据库
+                    _context.Shoprecords.Add(shoprecord);
+                    await _context.SaveChangesAsync();
 
-            // 返回创建的资源，包含新生成的 ID
-            return CreatedAtAction("GetShoprecord", new { id = shoprecord.ShopRecordid }, shoprecord);
+                    //這邊是9/24新加的部分
+                    int shopRecordId = shoprecord.ShopRecordid;
+
+                    foreach (var product in dto.AllProducts)
+                    {
+                        var shoprecordDetail = new ShoprecordDetail
+                        {
+                            ShopRecordid = shopRecordId, // 關聯主表
+                            MallProductTableId = product.MallProductTableId,
+                            MallProductName = product.MallProductName,
+                            MallProductQuantity = product.MallProductQuantity,
+
+                        };
+
+                        _context.ShoprecordDetails.Add(shoprecordDetail);
+                    }
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return Ok((new { shopRecordid = shoprecord.ShopRecordid }));
+                }
+                catch (Exception ex)
+                {
+                    // 回滾事務
+                    await transaction.RollbackAsync();
+
+                }
+                return StatusCode(500, "訂單處理發生錯誤");
+            }
+
+
+
         }
 
         //post 以id
