@@ -35,9 +35,9 @@ namespace Travel.WebApi.Controllers
                     AllDays = travel.AllDays,
                     TravelareaId = travel.TravelareaId,
                     TravelDatetime = travel.TravelDatetime,
-                    TravelIntroduction =travel.TravelIntroduction,
+                    TravelIntroduction = travel.TravelIntroduction,
                     TravelMeetingpoint = travel.TravelMeetingpoint,
-                    Price =travel.Price,
+                    Price = travel.Price,
                     Pictures = travel.Pictures
                 })
                 .Take(6)
@@ -46,6 +46,7 @@ namespace Travel.WebApi.Controllers
             return Ok(result); // 使用 Ok() 來返回 200 OK 結果
         }
         //台北
+        //[HttpGet]
         //public async Task<ActionResult<IEnumerable<ProductTravelDTOModel>>> GetProductTravels2()
         //{
         //    var result = await _context.ProductTravels
@@ -68,6 +69,7 @@ namespace Travel.WebApi.Controllers
         //    return Ok(result); // 使用 Ok() 來返回 200 OK 結果
         //}
         //台中
+
         //public async Task<ActionResult<IEnumerable<ProductTravelDTOModel>>> GetProductTravels7()
         //{
         //    var result = await _context.ProductTravels
