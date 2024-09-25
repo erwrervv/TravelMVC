@@ -14,9 +14,9 @@ namespace Travel.WebApi.Controllers
     [ApiController]
     public class ProductTravelsController : ControllerBase
     {
-        private readonly finalContext _context;
+        private readonly FinalContext _context;
 
-        public ProductTravelsController(finalContext context)
+        public ProductTravelsController(FinalContext context)
         {
             _context = context;
         }
@@ -26,19 +26,19 @@ namespace Travel.WebApi.Controllers
         //基隆
         public async Task<ActionResult<IEnumerable<ProductTravelDTOModel>>> GetProductTravels()
         {
-            var result = await _context.product_travel
-                .Where(w => w.travelarea_id == 1)
+            var result = await _context.ProductTravels
+                .Where(w => w.TravelareaId == 1)
                 .Select(travel => new ProductTravelDTOModel
                 {
-                    TravelId = travel.travel_id,
-                    TravelName = travel.travel_name,
-                    AllDays = travel.All_days,
-                    TravelareaId = travel.travelarea_id,
-                    TravelDatetime = travel.travel_datetime,
-                    TravelIntroduction =travel.travel_introduction,
-                    TravelMeetingpoint = travel.travel_meetingpoint,
-                    Price =travel.price,
-                    Pictures =travel.pictures
+                    TravelId = travel.TravelId,
+                    TravelName = travel.TravelName,
+                    AllDays = travel.AllDays,
+                    TravelareaId = travel.TravelareaId,
+                    TravelDatetime = travel.TravelDatetime,
+                    TravelIntroduction =travel.TravelIntroduction,
+                    TravelMeetingpoint = travel.TravelMeetingpoint,
+                    Price =travel.Price,
+                    Pictures =travel.Pictures
                 })
                 .Take(6)
                 .ToListAsync(); // 將 IQueryable 轉換為 List 並非同步地執行
@@ -46,6 +46,7 @@ namespace Travel.WebApi.Controllers
             return Ok(result); // 使用 Ok() 來返回 200 OK 結果
         }
         //台北
+        //[HttpGet]
         //public async Task<ActionResult<IEnumerable<ProductTravelDTOModel>>> GetProductTravels2()
         //{
         //    var result = await _context.ProductTravels
@@ -68,6 +69,7 @@ namespace Travel.WebApi.Controllers
         //    return Ok(result); // 使用 Ok() 來返回 200 OK 結果
         //}
         //台中
+
         //public async Task<ActionResult<IEnumerable<ProductTravelDTOModel>>> GetProductTravels7()
         //{
         //    var result = await _context.ProductTravels
@@ -159,7 +161,7 @@ namespace Travel.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductTravel>> GetProductTravel(int id)
         {
-            var productTravel = await _context.ProductTravel.FindAsync(id);
+            var productTravel = await _context.ProductTravels.FindAsync(id);
 
             if (productTravel == null)
             {

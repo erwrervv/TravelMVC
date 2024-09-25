@@ -23,6 +23,10 @@ public partial class ProductTravel
 
     public decimal? Price { get; set; }
 
+    public string? Tag { get; set; }
+
+    public string? Pictures { get; set; }
+
     public virtual ICollection<TravelDetail> TravelDetails { get; set; } = new List<TravelDetail>();
 
     public virtual TravelareaTable? Travelarea { get; set; }

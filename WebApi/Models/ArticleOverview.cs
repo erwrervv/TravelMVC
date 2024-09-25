@@ -27,7 +27,7 @@ public partial class ArticleOverview
 
     public virtual ICollection<ArticleRepository> ArticleRepositories { get; set; } = new List<ArticleRepository>();
 
-    public virtual ICollection<comment> Comments { get; set; } = new List<comment>();
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<MembersLike> MembersLikes { get; set; } = new List<MembersLike>();
 
