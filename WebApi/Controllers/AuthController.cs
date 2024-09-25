@@ -15,9 +15,9 @@ namespace Travel.WebApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly finalContext _context;
+        private readonly FinalContext _context;
 
-        public AuthController(finalContext context)
+        public AuthController(FinalContext context)
         {
             _context = context;
         }
